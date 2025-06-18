@@ -104,6 +104,16 @@ This document lists all main API endpoints, their purpose, supported HTTP method
 - **GET /api/events/details**
   - Get basic details for a single event by eventId. Returns: title, description, category, event time, ticket price, seat count, image, contact, location, community name, creator info (name, email, role), participatedUserCount, and ticketConfirmedUserCount.
 
+- **GET /api/events/analytics**
+  - Get analytics for a specific event (Admin, Event Creator, or Community Admin)
+  - Query: `eventId=<eventId>`
+  - Returns: totalTicketsSold, ticketStatusBreakdown, totalRevenue, totalParticipants, volunteerApproved, volunteerPending, volunteerRejected, commentsCount, chatMessagesCount
+
+- **GET /api/events/created**
+  - Get a paginated list of events created by the authenticated user (any role)
+  - Query: `page=<number>` (optional)
+  - Returns: events, page, pageSize, total, totalPages
+
 ---
 
 ## Communities
