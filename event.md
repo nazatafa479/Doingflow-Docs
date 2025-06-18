@@ -500,9 +500,7 @@ This document describes the RESTful API endpoints for event management in the Ev
 - **Notes:**
   - This endpoint is for users to view their own ticket details for a specific event.
   - Returns both the ticket, event, and payment details for convenience.
-
----
-
+----
 ## POST Request JSON Formats
 
 ### Create Event
@@ -593,8 +591,34 @@ This document describes the RESTful API endpoints for event management in the Ev
   "newPassword": "newpass"
 }
 ```
+---
 
-# ...existing code...
+### My Created Events
+- **URL:** `/api/events/created`
+- **Method:** `GET`
+- **Auth:** Required (any authenticated user)
+- **Query Params:**
+  - `page` (optional, default 1): Page number for pagination
+- **Response:**
+  - `200 OK`
+  ```json
+  {
+    "events": [ ...eventObjects... ],
+    "page": 1,
+    "pageSize": 10,
+    "total": 25,
+    "totalPages": 3
+  }
+  ```
+- **Field Descriptions:**
+  - `events`: Array of event objects created by the authenticated user (max 10 per page)
+  - `page`: Current page number
+  - `pageSize`: Number of events per page (always 10)
+  - `total`: Total number of events created by the user
+  - `totalPages`: Total number of pages
+- **Notes:**
+  - Events are sorted by most recently created first.
+  - Only the user who created the events can access this endpoint.
 
 ---
 
@@ -740,3 +764,35 @@ POST /api/events/approve-payment
   - The storage model is optimized for unlimited scalability: each message is a separate document with an eventId field.
 
 ---
+
+### Event Analytics
+- **URL:** `/api/events/analytics?eventId=<eventId>`
+- **Method:** `GET`
+- **Auth:** Required (Admin, Event Creator, or Community Admin of the event's community)
+- **Query Params:**
+  - `eventId` (required): The ID of the event to fetch analytics for
+- **Response:**
+  - `200 OK`
+  ```json
+  {
+    "eventId": "...",
+    "totalTicketsSold": 42,
+    "ticketStatusBreakdown": { "confirmed": 40, "pending": 1, "cancelled": 1 },
+    "totalRevenue": 1200,
+    "totalParticipants": 55,
+    "volunteerStatusBreakdown": {
+      "volunteerApproved": 10,
+      "volunteerPending": 2,
+      "volunteerRejected": 1
+    },
+    "commentsCount": 8
+  }
+  ```
+- **Field Descriptions:**
+  - `totalTicketsSold`: Number of confirmed tickets for the event
+  - `ticketStatusBreakdown`: Object mapping ticket status to count
+  - `totalRevenue`: Total completed payment amount for the event
+  - `totalParticipants`: Number of event participants
+  - `volunteerStatusBreakdown`: Object with approved, pending, and rejected volunteer request counts
+  - `commentsCount`: Number of comments on the event
+- **Access Control:** Only admins, the event creator, or the community admin of the event's community can access this endpoint.
