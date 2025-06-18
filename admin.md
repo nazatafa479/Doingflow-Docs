@@ -125,7 +125,50 @@ This document details all API endpoints and JSON data formats for admin users in
 ---
 
 ## Analytics & Dashboard
-- Analytics: `GET /api/admin/analytics` (shows only active events, i.e., events starting today or in the future)
+- Analytics: `GET /api/admin/analytics`
+  - Returns a comprehensive analytics dashboard for admins.
+  - **Auth:** Required (Admin, JWT)
+  - **Response:**
+    ```json
+    {
+      "totalEvents": 10,
+      "totalParticipants": 100,
+      "totalVolunteers": 20,
+      "activeEvents": 5,
+      "completedEvents": 5,
+      "totalUsers": 50,
+      "totalCommunities": 8,
+      "pendingCommunities": 2,
+      "totalCommunityAdmins": 6,
+      "pendingCommunityAdmins": 1,
+      "totalTicketsSold": 120,
+      "totalRevenue": 5000,
+      "activeUsers": 30,
+      "eventsByCategory": { "Music": 4, "Tech": 3 },
+      "volunteerRequestsPending": 7,
+      "pendingEvents": 3,
+      "totalTicketedEvents": 4
+    }
+    ```
+  - **Field Descriptions:**
+    - `totalEvents`: Total number of events in the system.
+    - `totalParticipants`: Total number of event participants.
+    - `totalVolunteers`: Total number of approved volunteers.
+    - `activeEvents`: Number of events with `eventTime` today or in the future.
+    - `completedEvents`: Number of events with `eventTime` in the past.
+    - `totalUsers`: Total number of registered users.
+    - `totalCommunities`: Total number of communities.
+    - `pendingCommunities`: Number of communities pending approval.
+    - `totalCommunityAdmins`: Total number of community admins.
+    - `pendingCommunityAdmins`: Number of community admins pending approval.
+    - `totalTicketsSold`: Total number of tickets sold (confirmed).
+    - `totalRevenue`: Total revenue from completed ticket payments.
+    - `activeUsers`: Number of users who logged in within the last 30 days.
+    - `eventsByCategory`: Object mapping event categories to their event count.
+    - `volunteerRequestsPending`: Number of volunteer requests pending approval.
+    - `pendingEvents`: Number of events pending admin/community approval.
+    - `totalTicketedEvents`: Number of events that are ticketed (`isTicketed: true`).
+  - **Note:** Only events with `eventTime` today or in the future are counted as `activeEvents`. Past events are counted as `completedEvents`.
 - Approval dashboard: `GET /api/admin/dashboard`
 
 ---
