@@ -162,6 +162,24 @@ This document lists all main API endpoints, their purpose, supported HTTP method
 
 - **GET /api/admin/analytics**
   - Get analytics data (Admin)
+  - Returns all of the following fields:
+    - totalEvents
+    - totalParticipants
+    - totalVolunteers
+    - activeEvents
+    - completedEvents
+    - totalUsers
+    - totalCommunities
+    - pendingCommunities
+    - totalCommunityAdmins
+    - pendingCommunityAdmins
+    - totalTicketsSold
+    - totalRevenue
+    - activeUsers
+    - eventsByCategory
+    - volunteerRequestsPending
+    - pendingEvents
+    - totalTicketedEvents
 
 - **GET /api/admin/report**
   - Get admin reports (Admin)
