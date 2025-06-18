@@ -316,9 +316,22 @@ This document describes the RESTful API endpoints for event management in the Ev
     "totalVolunteers": 20,
     "activeEvents": 5,
     "completedEvents": 5,
-    "totalUsers": 50
+    "totalUsers": 50,
+    "totalCommunities": 8,
+    "pendingCommunities": 2,
+    "totalCommunityAdmins": 6,
+    "pendingCommunityAdmins": 1,
+    "totalTicketsSold": 120,
+    "totalRevenue": 5000,
+    "activeUsers": 30,
+    "eventsByCategory": { "Music": 4, "Tech": 3 },
+    "volunteerRequestsPending": 7,
+    "pendingEvents": 3,
+    "totalTicketedEvents": 4
   }
   ```
+- **Field Descriptions:**
+  - See `admin.md` for full field breakdown.
 - **Note:** Only events with `eventTime` today or in the future are counted as `activeEvents`. Past events are counted as `completedEvents`.
 
 ---
