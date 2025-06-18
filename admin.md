@@ -304,6 +304,24 @@ POST /api/events/approve-payment
 
 ---
 
+## Community Admin Approval Workflow (NEW)
+- After registration and email verification, community admin accounts are **pending** until approved by an admin.
+- Pending community admins appear in the `/api/admin/pending-communities` dashboard for review.
+- Admins approve a pending community admin by sending a PATCH request to `/api/admin/pending-communities/approve` with `{ communityId, email }`.
+- Once approved, the community admin can log in and access all features for their community.
+- If a community admin attempts to log in or access features before approval, they receive a `403` error: `Your account is pending admin approval.`
+
+### Example Approval Request (Admin Only)
+```json
+PATCH /api/admin/pending-communities/approve
+{
+  "communityId": "<community_id>",
+  "email": "admin@community.com"
+}
+```
+
+---
+
 # Notes
 - If payment is mentioned, only manual payment is supported. No payment gateway integration.
 - Payment approval is always handled by the event creator (admin, community admin, or user) or an admin, depending on who created the event.
@@ -614,9 +632,21 @@ POST /api/events/approve-payment
         {
           "_id": "<community_id>",
           "communityName": "My Community",
-          "email": "community@example.com",
+          "email": "admin@community.com",
           "country": "US",
-          "communityType": "non-profit"
+          "communityType": "non-profit",
+          "createdAt": "2025-06-17T12:00:00.000Z",
+          "phone": "0123456789",
+          "communityStartDate": "2024-01-01T00:00:00.000Z",
+          "subscription": "<subscription_id>",
+          "pendingAdmin": {
+            "_id": "<community_admin_id>",
+            "email": "admin@community.com",
+            "communityName": "My Community",
+            "createdAt": "2025-06-17T12:00:00.000Z",
+            "phone": "0123456789",
+            "country": "US"
+          }
         }
         // ...up to 10 per page
       ],
@@ -626,3 +656,42 @@ POST /api/events/approve-payment
       "totalPages": 2
     }
     ```
+
+## Pending Communities API Response
+
+The `/api/admin/pending-communities` endpoint returns a paginated list of pending communities with detailed information for each community and its pending admin.
+
+### Example Response
+```json
+{
+  "pendingCommunities": [
+    {
+      "_id": "<community_id>",
+      "communityName": "My Community",
+      "email": "admin@community.com",
+      "country": "US",
+      "communityType": "non-profit",
+      "createdAt": "2025-06-17T12:00:00.000Z",
+      "phone": "0123456789",
+      "communityStartDate": "2024-01-01T00:00:00.000Z",
+      "subscription": "<subscription_id>",
+      "pendingAdmin": {
+        "_id": "<community_admin_id>",
+        "email": "admin@community.com",
+        "communityName": "My Community",
+        "createdAt": "2025-06-17T12:00:00.000Z",
+        "phone": "0123456789",
+        "country": "US"
+      }
+    }
+    // ...more communities
+  ],
+  "total": 1,
+  "page": 1,
+  "limit": 10,
+  "totalPages": 1
+}
+```
+
+- Each `community` object includes: `communityName`, `email`, `country`, `communityType`, `createdAt`, `phone`, `communityStartDate`, `subscription`, and a `pendingAdmin` object with admin details.
+- Only communities with no approved admin are listed here.
