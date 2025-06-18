@@ -559,3 +559,70 @@ POST /api/events/approve-payment
   "createdAt": "2025-06-17T12:00:00.000Z"
 }
 ```
+
+---
+
+## View Pending Events (Paginated)
+- **URL:** `/api/admin/pending-events`
+- **Method:** `GET`
+- **Query Params:**
+  - `page` (default: 1)
+  - `limit` (default: 10)
+- **Auth:** Required (Admin)
+- **Response:**
+  - `200 OK`
+    ```json
+    {
+      "pendingEvents": [
+        {
+          "_id": "<event_id>",
+          "title": "Event Title",
+          "eventTime": "2025-07-01T10:00:00.000Z",
+          "communityId": {
+            "_id": "<community_id>",
+            "communityName": "Community Name"
+          },
+          "createdBy": {
+            "_id": "<user_id>",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@example.com",
+            "role": "user"
+          }
+        }
+        // ...up to 10 per page
+      ],
+      "total": 42,
+      "page": 1,
+      "limit": 10,
+      "totalPages": 5
+    }
+    ```
+
+## View Pending Communities (Paginated)
+- **URL:** `/api/admin/pending-communities`
+- **Method:** `GET`
+- **Query Params:**
+  - `page` (default: 1)
+  - `limit` (default: 10)
+- **Auth:** Required (Admin)
+- **Response:**
+  - `200 OK`
+    ```json
+    {
+      "pendingCommunities": [
+        {
+          "_id": "<community_id>",
+          "communityName": "My Community",
+          "email": "community@example.com",
+          "country": "US",
+          "communityType": "non-profit"
+        }
+        // ...up to 10 per page
+      ],
+      "total": 12,
+      "page": 1,
+      "limit": 10,
+      "totalPages": 2
+    }
+    ```
