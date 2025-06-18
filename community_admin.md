@@ -2,6 +2,15 @@
 
 This document details all API endpoints and JSON data formats for community admins in the Event Management App backend. All endpoints require `Authorization: Bearer <token>` except registration/login.
 
+## Community Admin Approval Workflow (NEW)
+- After registration and email verification, your account will be marked as **pending** until approved by an admin.
+- You **cannot** log in or access any community admin features until your account is approved.
+- Admins can view and approve pending community admins in the `/api/admin/pending-communities` dashboard.
+- Once approved, you will be able to log in and access all community admin features for your community.
+- If you attempt to log in or access features before approval, you will receive a `403` error with the message: `Your account is pending admin approval.`
+
+---
+
 ## Authentication
 - Register: `POST /api/auth/community-admin-register`
   - JSON:
